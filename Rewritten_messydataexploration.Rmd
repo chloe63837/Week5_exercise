@@ -9,4 +9,18 @@ rm(list=ls())
 library(tidyverse)
 ```
 
+**Visualising** your data is important!\
+Summary statistics can be highly misleading, and simply plotting them can reveal a lot more!\
+Lets take a closer look at two datasets...
+
+------------------------------------------------------------------------
+
+# Problem 1
+
+Anscombe, F. J. (1973). Graphs in statistical analysis. *American Statistician, 27*(1), 17–21. <doi:10.1080/00031305.1973.10478966>.
+
+```{r setup, include=FALSE}
+anscombe_quartet <- readRDS("anscombe quartet.rds")  # Load the data
+```
+
 
