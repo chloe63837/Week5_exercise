@@ -7,6 +7,7 @@ date: "2025-02-23"
 ```{r setup, include=FALSE}
 rm(list=ls())
 library(tidyverse)
+library(knitr)
 ```
 
 **Visualising** your data is important!\
@@ -19,13 +20,13 @@ Lets take a closer look at two datasets...
 
 Anscombe, F. J. (1973). Graphs in statistical analysis. *American Statistician, 27*(1), 17–21. <doi:10.1080/00031305.1973.10478966>.
 
-```{r setup, include=FALSE}
+```{r import1, include=FALSE}
 anscombe_quartet <- readRDS("anscombe quartet.rds")  # Load the data
 ```
 
 ## Let's explore the dataset
 
-```{r, echo=TRUE, eval=FALSE}
+```{r explore 1, echo=TRUE, eval=FALSE}
 str(anscombe_quartet)
 ```
 
@@ -35,7 +36,7 @@ We can see that this data contains four different sub-datasets, with numerical x
 
 ## Let's check some summary statistics
 
-```{r, echo=TRUE}
+```{r ss1, echo=TRUE}
 anscombe_quartet %>% 
   group_by(dataset) %>% 
   summarise(
@@ -58,7 +59,7 @@ library(ggplot2)
 
 p1 <- ggplot(anscombe_quartet, aes(x = x, y = y)) +
   geom_point(size = 2, alpha = 0.4) + 
-  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "black", size = 0.5) +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "black", linewidth = 0.5) +
   facet_wrap(~dataset) +
   labs(
     title = "Anscombe's Quartet",
@@ -71,7 +72,7 @@ ggsave("anscombe_plot.png", plot = p1, width = 5, height = 5, dpi = 300)
 
 ```
 
-```{r display_plot, echo=FALSE}
+```{r display_plot1, echo=FALSE}
 # Display the saved plot in the document
 knitr::include_graphics("anscombe_plot.png")
 ```
@@ -89,12 +90,70 @@ Overall... we should always visualise data instead of relying on summary statist
 
 # Problem 2
 
-```{r setup, include=FALSE}
+```{r import2, include=FALSE}
 datasaurus_dozen <- readRDS("datasaurus_dozen.rds")
 ```
 
 ## Let's explore the dataset
 
-```{r, echo=TRUE, eval=FALSE}
+```{r explore 2, echo=TRUE, eval=FALSE}
 str(datasaurus_dozen)
 ```
+
+```{r explore 3, echo=TRUE, eval=FALSE}
+datasaurus_dozen %>% 
+  group_by(dataset) %>% 
+  summarise(count = n())
+
+datasaurus_dozen %>% 
+  summarise(count = n_distinct(dataset))
+
+```
+
+Shows that there are 13 distinct datasets, each with 142 x and y points.
+
+## Let's check some summary statistics
+
+```{r ss2, echo=TRUE}
+
+datasaurus_dozen %>% 
+  group_by(dataset) %>% 
+  summarise(
+    mean_x      = round(mean(x), 3),
+    mean_y      = round(mean(y), 3),
+    min_x       = round(min(x), 3),
+    min_y       = round(min(y), 3),
+    max_x       = round(max(x), 3),
+    max_y       = round(max(y), 3),
+    correlation = round(cor(x, y), 3)
+  ) %>% 
+  kable(caption = "Descriptive Statistics & Correlations of Datasaurus Dozen")
+```
+
+The summary statistics highlight that the 13 datasets in the Datasaurus Dozen share nearly **identical statistical properties and correlations**.
+
+## Let's plot the data with ggplot2
+
+```{r datasaurus_dozen_plot, echo=FALSE}
+
+p2 <- ggplot(datasaurus_dozen, aes(x = x, y = y)) +
+  geom_point(size = 1, alpha = 0.4) + 
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "black", linewidth = 0.5) +
+  facet_wrap(~dataset)+
+  labs(
+    title = "Datasaurus Dozen",
+    x = "X Values",
+    y = "Y Values"
+  )
+
+
+# saving plot for printing
+ggsave("datasaurus_dozen_plot.png", plot = p2, width = 5, height = 5, dpi = 300)
+```
+
+```{r display_plot2, echo=FALSE}
+# Display the saved plot in the document
+knitr::include_graphics("datasaurus_dozen_plot.png")
+```
+
+The plots demonstrate that despite having very similar summary statistics, the datasets have **very different distributions**, each with a different (fun) shape!
