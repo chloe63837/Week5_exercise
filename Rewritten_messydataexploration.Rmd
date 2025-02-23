@@ -23,4 +23,34 @@ Anscombe, F. J. (1973). Graphs in statistical analysis. *American Statistician, 
 anscombe_quartet <- readRDS("anscombe quartet.rds")  # Load the data
 ```
 
+## Let's explore the dataset
+
+```{r, echo=TRUE, eval=FALSE}
+str(anscombe_quartet)
+```
+
+The **str() function** compactly displays a *compact, structural summary* of the dataset. It is used to quickly inspect the structure, showing variable types, sizes, and first few values for each variable.
+
+We can see that this data contains four different sub-datasets, with numerical x and y variables.
+
+## Let's check some summary statistics
+
+```{r, echo=TRUE}
+anscombe_quartet %>% 
+  group_by(dataset) %>% 
+  summarise(
+    mean_x      = mean(x),
+    mean_y      = mean(y),
+    min_x       = min(x),
+    min_y       = min(y),
+    max_x       = max(x),
+    max_y       = max(y),
+    correlation = cor(x, y)
+  )
+```
+
+The summary statistics highlight that the Anscombe's Quartet datasets share nearly **identical statistical properties**.
+
+# Let's plot the data with ggplot
+
 
