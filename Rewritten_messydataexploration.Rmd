@@ -71,5 +71,30 @@ ggsave("anscombe_plot.png", plot = p1, width = 5, height = 5, dpi = 300)
 
 ```
 
+```{r display_plot, echo=FALSE}
+# Display the saved plot in the document
+knitr::include_graphics("anscombe_plot.png")
+```
 
+The plots demonstrate that despite having very similar summary statistics, the four datasets have **very different distributions**.
 
+-   *Dataset 1:* linear relationship, **strong positive correlation** between x and y (linear regression would be appropriate)
+-   *Dataset 2:* non-linear, **quadratic relationship** (hence, linear regression wouldn't be appropriate)
+-   *Dataset 3:* linear relationship with an **outlier** (most points follow a linear trend, but the outlier distorts a linear regression)
+-   *Dataset 4:* points have the **same x value** with different y values, and one extreme outlier (linear regression wouldn't be appropriate)
+
+Overall... we should always visualise data instead of relying on summary statistics and making assumptions.
+
+------------------------------------------------------------------------
+
+# Problem 2
+
+```{r setup, include=FALSE}
+datasaurus_dozen <- readRDS("datasaurus_dozen.rds")
+```
+
+## Let's explore the dataset
+
+```{r, echo=TRUE, eval=FALSE}
+str(datasaurus_dozen)
+```
